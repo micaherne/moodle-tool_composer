@@ -22,12 +22,13 @@ class manager {
         return self::$targetdir;
     }
 
-    public static function write_composer_json() {
-        global $CFG;
+    public static function set_target_dir($dir) {
+        self::$targetdir = $dir;
+    }
 
-        $targetdir = self::get_target_dir();
-
-        $pm = \core_plugin_manager::instance();
+    public static function get_composer_plugins() {
+        // Find plugins with composer.json
+        // TODO: Could be changed into a generator if we only support PHP 5.5 or greater
         $composerplugins = [];
         foreach (\core_component::get_plugin_types() as $type => $dir) {
             $plugins = \core_component::get_plugin_list_with_file($type, 'composer.json');
@@ -35,6 +36,13 @@ class manager {
                 $composerplugins[$type . '_' . $name] = $composerfile;
             }
         }
+        return $composerplugins;
+    }
+
+    public static function write_composer_json() {
+        global $CFG;
+
+        $targetdir = self::get_target_dir();
 
         if (!file_exists($targetdir . '/vendor')) {
             mkdir($targetdir . '/vendor', 0777, true);
@@ -50,17 +58,31 @@ class manager {
         $composer['repositories'] = [];
         $composer['require'] = [];
 
-        foreach($composerplugins as $component => $path) {
+        foreach(self::get_composer_plugins() as $component => $path) {
             $composer['repositories'][] = ['type' => 'path', 'url' => realpath(dirname($path))];
             $meta = json_decode(file_get_contents($path));
-            if ($name = $meta->name) {
+            if (!empty($meta->name)) {
+                $name = $meta->name;
                 $composer['require'][$name] = '*@dev'; // dev required to allow install
             } else {
-                mtrace("Name not found");
+                mtrace("Name not found in $path. Ignoring.");
+                continue;
             }
         }
 
         file_put_contents($targetdir . '/composer.json', json_encode($composer, JSON_PRETTY_PRINT));
+    }
+
+    public static function overwrite_local_autoloads() {
+        foreach(self::get_composer_plugins() as $component => $path) {
+            $plugindir = dirname($path);
+            $vendordir = $plugindir . '/vendor';
+            if (!file_exists($vendordir)) {
+                mkdir($vendordir);
+            }
+            $filecontents = '<?php require_once \'' . self::get_target_dir() . '/vendor/autoload.php\';';
+            file_put_contents($plugindir . '/vendor/autoload.php', $filecontents);
+        }
     }
 
     /**
@@ -70,7 +92,7 @@ class manager {
      *
      * @return void exit() if something goes wrong
      */
-    public static function install_composer_dependencies() {
+    public static function update_composer_dependencies() {
         // To restore the value after finishing.
         $cwd = getcwd();
 
@@ -126,7 +148,7 @@ class manager {
         }
 
         // Update composer dependencies.
-        passthru("php composer.phar install", $code);
+        passthru("php composer.phar update", $code);
         if ($code != 0) {
             exit($code);
         }
