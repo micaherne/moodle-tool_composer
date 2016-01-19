@@ -1,0 +1,13 @@
+{
+    "name": "micaherne/moodle-tool_composer",
+    "authors": [
+        {
+            "name": "Michael Aherne",
+            "email": "michael.aherne@strath.ac.uk"
+        }
+    ],
+    "license": "GPL-2.0",
+    "require": {
+        "symfony/console": "^3.0"
+    }
+}
