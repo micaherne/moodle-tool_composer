@@ -33,7 +33,7 @@ From the help:
 ### Options
 |Name              |Description                 |
 |------------------|----------------------------|
-|overwrite-autoload|Plugins using Composer normally have their dependencies installed into a vendor directory inside the plugin, and access it by including vendor/autoload.php which enables class loading. Because we have installed our dependencies elsewhere, we use this flag to point the local vendor/autoload.php files at the central one.      |
+|overwrite-autoload|Plugins using Composer normally have their dependencies installed into a vendor directory inside the plugin, and autoload classes by including vendor/autoload.php. Because we have installed our dependencies elsewhere, we use this flag to point the local vendor/autoload.php files at the central one. (The original autoload.php will be backed up as autoload.php.bak)     |
 |install-in-codebase|If this is not selected, the Composer dependencies will be installed in the [dataroot]/tool_composer/vendor directory. If selected, the dependencies will be installed in [dirroot]/lib/vendor.|
 
 #### Which options should I use?
