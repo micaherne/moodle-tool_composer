@@ -6,8 +6,5 @@
             "email": "michael.aherne@strath.ac.uk"
         }
     ],
-    "license": "GPL-3.0",
-    "require": {
-
-    }
+    "license": "GPL-3.0"
 }
