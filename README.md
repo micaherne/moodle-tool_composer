@@ -12,6 +12,8 @@ Composer has become a de-facto standard for dependency management in the PHP wor
 
 What happens in this scenario is that whichever block accesses a class in my/library first will cause it to be autoloaded from its local vendor directory. This will be more or less randomly either version 0.3 or 5.1, causing unpredictable behaviour.
 
+(This is obviously a simplified version of the issue. In real life, it's much more likely that the conflicts will arise deeper into the dependency chains.)
+
 If we have a number of Moodle plugins autoloading Composer-managed dependencies, we need a way to ensure that these do not conflict across the Moodle installation, and that we can resolve a set of versions that are compatible with all.
 
 This tool attempts to do this.
