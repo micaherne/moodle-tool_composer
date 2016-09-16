@@ -8,6 +8,6 @@
     ],
     "license": "GPL-3.0",
     "require": {
-        "symfony/console": "^3.0"
+
     }
 }
