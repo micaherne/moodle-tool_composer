@@ -19,7 +19,7 @@ If we have a number of Moodle plugins autoloading Composer-managed dependencies,
 This tool attempts to do this.
 
 ## Usage
-From the help:
+The only interface is currently the CLI script cli/composer.php. From the help:
 
     Usage:
       php composer.php [--overwrite-autoload] [--install-in-codebase] [--help] [command]
