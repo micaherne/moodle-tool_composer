@@ -46,4 +46,4 @@ Use the other method if you are happy to have application code in your dataroot.
 
 Wikimedia created an excellent plugin for Composer, [composer-merge-plugin](https://github.com/wikimedia/composer-merge-plugin), which enables multiple composer.json files to be combined into a single one on-the-fly when running commands.
 
-This tool simply generates a composer.json file with this plugin required, finds all Moodle plugins with a composer.json, and adds these to the list to be merged. This generated composer.json file is used to install and update plugins by tweaking the COMPOSER and COMPOSER_VENDOR_DIR environment variables to the required paths.
+This tool simply generates a composer.json file with this plugin required, finds all Moodle plugins with a composer.json, and adds these to the list to be merged. This generated composer.json file is used to install and update plugins in the correct place by tweaking the COMPOSER and COMPOSER_VENDOR_DIR environment variables.
